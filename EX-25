@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <dirent.h>
+
+int main()
+{
+    int fd;
+    char filename[50];
+    struct stat fileInfo;
+    DIR *dir;
+    struct dirent *entry;
+    off_t position;
+
+    /* Get file name from user */
+    printf("Enter file name: ");
+    scanf("%49s", filename);
+
+    /* Open file */
+    fd = open(filename, O_RDWR | O_CREAT, 0644);
+
+    if (fd == -1) {
+        perror("open");
+        return 1;
+    }
+
+    printf("\nFile opened successfully.\n");
+
+    /* fcntl() */
+    printf("\n--- fcntl() ---\n");
+    printf("File Descriptor: %d\n", fd);
+    printf("File Status Flags: %d\n", fcntl(fd, F_GETFL));
+
+    /* lseek() */
+    printf("\n--- lseek() ---\n");
+    position = lseek(fd, 0, SEEK_END);
+
+    if (position == -1) {
+        perror("lseek");
+    } else {
+        printf("Current file position: %ld bytes\n",
+               (long)position);
+    }
+
+    /* stat() */
+    printf("\n--- stat() ---\n");
+
+    if (stat(filename, &fileInfo) == -1) {
+        perror("stat");
+    } else {
+        printf("File Size   : %ld bytes\n",
+               (long)fileInfo.st_size);
+        printf("Inode Number: %ld\n",
+               (long)fileInfo.st_ino);
+        printf("File Links  : %ld\n",
+               (long)fileInfo.st_nlink);
+        printf("Permissions  : %o\n",
+               fileInfo.st_mode & 0777);
+    }
+
+    /* Close file */
+    close(fd);
+
+    /* opendir() */
+    printf("\n--- opendir() and readdir() ---\n");
+
+    dir = opendir(".");
+
+    if (dir == NULL) {
+        perror("opendir");
+        return 1;
+    }
+
+    printf("Files and directories in current directory:\n");
+
+    /* readdir() */
+    while ((entry = readdir(dir)) != NULL) {
+        printf("%s\n", entry->d_name);
+    }
+
+    closedir(dir);
+
+    return 0;
+}
+
+OUTPUT:
+Enter file name: SAMPLE.TXT
+
+File opened successfully.
+
+--- fcntl() ---
+File Descriptor: 3
+File Status Flags: 32770
+
+--- lseek() ---
+Current file position: 0 bytes
+
+--- stat() ---
+File Size   : 0 bytes
+Inode Number: 120
+File Links  : 1
+Permissions  : 644
+
+--- opendir() and readdir() ---
+Files and directories in current directory:
+.
+..
+SAMPLE.TXT
+a.out
+sample.txt
+main.c
+
