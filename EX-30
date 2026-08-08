@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <pthread.h>
+
+void *thread_function(void *arg)
+{
+    pthread_t current_thread;
+
+    current_thread = pthread_self();
+
+    printf("Thread is running...\n");
+
+    printf("Thread ID: %lu\n", (unsigned long)current_thread);
+
+    /* Demonstrate pthread_equal() */
+    if (pthread_equal(current_thread, pthread_self()))
+        printf("pthread_equal(): Thread IDs are equal.\n");
+    else
+        printf("pthread_equal(): Thread IDs are not equal.\n");
+
+    printf("Thread is exiting...\n");
+
+    /* Demonstrate pthread_exit() */
+    pthread_exit(NULL);
+}
+
+int main()
+{
+    pthread_t thread;
+    int result;
+
+    printf("Main thread started.\n");
+
+    /* (i) pthread_create() */
+    result = pthread_create(&thread, NULL, thread_function, NULL);
+
+    if (result != 0)
+    {
+        printf("Thread creation failed.\n");
+        return 1;
+    }
+
+    printf("Thread created successfully.\n");
+
+    /* (iii) pthread_equal() */
+    if (pthread_equal(thread, thread))
+        printf("Main: Thread IDs are equal.\n");
+    else
+        printf("Main: Thread IDs are not equal.\n");
+
+    /* (ii) pthread_join() */
+    result = pthread_join(thread, NULL);
+
+    if (result == 0)
+        printf("Thread joined successfully.\n");
+    else
+        printf("Thread join failed.\n");
+
+    printf("Main thread completed.\n");
+
+    return 0;
+}
+
+OUTPUT:
+Main thread started.
+Thread created successfully.
+Main: Thread IDs are equal.
+Thread is running...
+Thread ID: 139763539191488
+pthread_equal(): Thread IDs are equal.
+Thread is exiting...
+Thread joined successfully.
+Main thread completed.
