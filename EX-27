@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <dirent.h>
+
+int main()
+{
+    DIR *dir;
+    struct dirent *entry;
+    char dirname[100];
+
+    printf("Enter directory name: ");
+    scanf("%99s", dirname);
+
+    /* Open directory */
+    dir = opendir(dirname);
+
+    if (dir == NULL)
+    {
+        perror("Unable to open directory");
+        return 1;
+    }
+
+    printf("\nContents of directory '%s':\n", dirname);
+    printf("----------------------------------\n");
+
+    /* Read directory entries */
+    while ((entry = readdir(dir)) != NULL)
+    {
+        printf("%s\n", entry->d_name);
+    }
+
+    /* Close directory */
+    closedir(dir);
+
+    return 0;
+}
+OUTPUT:
+Enter directory name: .
+
+Contents of directory '.':
+----------------------------------
+.
+..
+a.out
+SAMPLE.TXT
+sample.txt
+main.c
