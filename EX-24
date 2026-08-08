@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+
+int main() {
+    int fd;
+    char filename[50];
+    char data[100];
+    char buffer[100];
+    ssize_t bytes;
+
+    printf("Enter file name: ");
+    scanf("%49s", filename);
+
+    /* Open/Create file */
+    fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+
+    if (fd == -1) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    printf("Enter data to write: ");
+    getchar();
+    fgets(data, sizeof(data), stdin);
+
+    /* Write to file */
+    bytes = write(fd, data, strlen(data));
+
+    if (bytes == -1) {
+        perror("Error writing file");
+        close(fd);
+        return 1;
+    }
+
+    printf("Data written successfully.\n");
+
+    /* Move file pointer to beginning */
+    lseek(fd, 0, SEEK_SET);
+
+    /* Read from file */
+    bytes = read(fd, buffer, sizeof(buffer) - 1);
+
+    if (bytes == -1) {
+        perror("Error reading file");
+        close(fd);
+        return 1;
+    }
+
+    buffer[bytes] = '\0';
+
+    printf("Data read from file: %s", buffer);
+
+    /* Close file */
+    close(fd);
+
+    printf("\nFile closed successfully.\n");
+
+    return 0;
+}
+
+OUTPUT:
+Enter file name: SA  sample.txt
+Enter data to write: ope erating system file management
+Data written successfully.
+Data read from file: operating system file management
+
+File closed successfully.
+
