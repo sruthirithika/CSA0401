@@ -1,0 +1,208 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    FILE *fp;
+    char filename[50];
+    char data[200];
+    int choice;
+
+    while (1)
+    {
+        printf("\n===== FILE MANAGEMENT SYSTEM =====\n");
+        printf("1. Create File\n");
+        printf("2. Write to File\n");
+        printf("3. Read File\n");
+        printf("4. Append to File\n");
+        printf("5. Delete File\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter file name: ");
+                scanf("%49s", filename);
+
+                fp = fopen(filename, "w");
+
+                if (fp == NULL)
+                {
+                    printf("Unable to create file.\n");
+                }
+                else
+                {
+                    printf("File created successfully.\n");
+                    fclose(fp);
+                }
+                break;
+
+            case 2:
+                printf("Enter file name: ");
+                scanf("%49s", filename);
+
+                fp = fopen(filename, "w");
+
+                if (fp == NULL)
+                {
+                    printf("Unable to open file.\n");
+                    break;
+                }
+
+                printf("Enter data to write: ");
+                getchar();
+                fgets(data, sizeof(data), stdin);
+
+                fputs(data, fp);
+                fclose(fp);
+
+                printf("Data written successfully.\n");
+                break;
+
+            case 3:
+                printf("Enter file name: ");
+                scanf("%49s", filename);
+
+                fp = fopen(filename, "r");
+
+                if (fp == NULL)
+                {
+                    printf("File not found.\n");
+                    break;
+                }
+
+                printf("\nFile Contents:\n");
+
+                while (fgets(data, sizeof(data), fp) != NULL)
+                {
+                    printf("%s", data);
+                }
+
+                fclose(fp);
+                break;
+
+            case 4:
+                printf("Enter file name: ");
+                scanf("%49s", filename);
+
+                fp = fopen(filename, "a");
+
+                if (fp == NULL)
+                {
+                    printf("Unable to open file.\n");
+                    break;
+                }
+
+                printf("Enter data to append: ");
+                getchar();
+                fgets(data, sizeof(data), stdin);
+
+                fputs(data, fp);
+                fclose(fp);
+
+                printf("Data appended successfully.\n");
+                break;
+
+            case 5:
+                printf("Enter file name to delete: ");
+                scanf("%49s", filename);
+
+                if (remove(filename) == 0)
+                {
+                    printf("File deleted successfully.\n");
+                }
+                else
+                {
+                    printf("Unable to delete file.\n");
+                }
+                break;
+
+            case 6:
+                printf("Exiting program...\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice.\n");
+        }
+    }
+
+    return 0;
+}
+OUTPUT:
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 1
+Enter file name: employee.txt
+File created successfully.
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 2
+Enter file name: employee.txt
+Enter data to write: employee management system
+Data written successfully.
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 3
+Enter file name: employee.txt
+
+File Contents:
+employee management system
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 4
+Enter file name: employee.txt
+Enter data to append: p operating system lab
+Data appended successfully.
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 4 3
+Enter file name: employee.txt
+
+File Contents:
+employee management system
+operating system lab
+
+===== FILE MANAGEMENT SYSTEM =====
+1. Create File
+2. Write to File
+3. Read File
+4. Append to File
+5. Delete File
+6. Exit
+Enter your choice: 5
+Enter file name to delete: employee.txt
+File deleted successfully.
+
