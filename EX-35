@@ -1,0 +1,85 @@
+#include <stdio.h>
+
+int main()
+{
+    int indexBlock[50];
+    int dataBlock[50];
+    int n, i, blockNo;
+
+    printf("Enter number of file blocks: ");
+    scanf("%d", &n);
+
+    printf("Enter data for each block:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Data for Block %d: ", i + 1);
+        scanf("%d", &dataBlock[i]);
+
+        /* Index block stores pointer to data block */
+        indexBlock[i] = i + 1;
+    }
+
+    printf("\n===== INDEX BLOCK =====\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Index[%d] -> Block %d\n",
+               i, indexBlock[i]);
+    }
+
+    printf("\n===== FILE DATA BLOCKS =====\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Block %d : %d\n",
+               indexBlock[i], dataBlock[i]);
+    }
+
+    /* Access a particular block */
+    printf("\nEnter block number to access: ");
+    scanf("%d", &blockNo);
+
+    if (blockNo < 1 || blockNo > n)
+    {
+        printf("Invalid block number.\n");
+    }
+    else
+    {
+        printf("\nIndex[%d] points to Block %d\n",
+               blockNo - 1, indexBlock[blockNo - 1]);
+
+        printf("Data in Block %d = %d\n",
+               blockNo, dataBlock[blockNo - 1]);
+    }
+
+    return 0;
+}
+
+ OUTPUT:
+Enter number of file blocks: 5
+Enter data for each block:
+Data for Block 1: 100
+Data for Block 2: 200
+Data for Block 3: 300
+Data for Block 4: 400
+Data for Block 5: 500
+
+===== INDEX BLOCK =====
+Index[0] -> Block 1
+Index[1] -> Block 2
+Index[2] -> Block 3
+Index[3] -> Block 4
+Index[4] -> Block 5
+
+===== FILE DATA BLOCKS =====
+Block 1 : 100
+Block 2 : 200
+Block 3 : 300
+Block 4 : 400
+Block 5 : 500
+
+Enter block number to access: 3
+
+Index[2] points to Block 3
+Data in Block 3 = 300
