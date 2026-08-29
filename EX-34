@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Record {
+    int id;
+    char name[30];
+};
+
+int main()
+{
+    struct Record records[50];
+    int n, i, recordNo;
+
+    printf("Enter number of records: ");
+    scanf("%d", &n);
+
+    /* Store records sequentially */
+    printf("\nEnter record details:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("\nRecord %d\n", i + 1);
+
+        printf("Enter ID: ");
+        scanf("%d", &records[i].id);
+
+        printf("Enter Name: ");
+        scanf("%29s", records[i].name);
+    }
+
+    /* Display all records in sequential order */
+    printf("\n===== FILE RECORDS =====\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("Record %d: ID = %d, Name = %s\n",
+               i + 1, records[i].id, records[i].name);
+    }
+
+    /* Access a particular record */
+    printf("\nEnter record number to access: ");
+    scanf("%d", &recordNo);
+
+    if (recordNo < 1 || recordNo > n)
+    {
+        printf("Invalid record number.\n");
+        return 1;
+    }
+
+    printf("\nAccessing records sequentially...\n");
+
+    for (i = 0; i < recordNo; i++)
+    {
+        printf("Reading Record %d: ID = %d, Name = %s\n",
+               i + 1, records[i].id, records[i].name);
+    }
+
+    printf("\nRequired Record:\n");
+    printf("ID   : %d\n", records[recordNo - 1].id);
+    printf("Name : %s\n", records[recordNo - 1].name);
+
+    return 0;
+}
+
+
+OUTPUT:
+Enter number of records: 4
+
+Enter record details:
+
+Record 1
+Enter ID: 101
+Enter Name: SRUTHI
+
+Record 2
+Enter ID: 102
+Enter Name: PRIYA
+
+Record 3
+Enter ID: 103
+Enter Name: DHANUSH
+
+Record 4
+Enter ID: 104
+Enter Name: MIHI
+
+===== FILE RECORDS =====
+Record 1: ID = 101, Name = SRUTHI
+Record 2: ID = 102, Name = PRIYA
+Record 3: ID = 103, Name = DHANUSH
+Record 4: ID = 104, Name = MIHI
+
+Enter record number to access: 
