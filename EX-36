@@ -1,0 +1,114 @@
+#include <stdio.h>
+
+struct Block
+{
+    int blockNo;
+    int data;
+    int next;
+};
+
+int main()
+{
+    struct Block blocks[50];
+    int n, i;
+    int first, last;
+    int current;
+
+    printf("Enter number of disk blocks in the file: ");
+    scanf("%d", &n);
+
+    printf("\nEnter block details:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("\nBlock %d\n", i + 1);
+
+        printf("Enter block number: ");
+        scanf("%d", &blocks[i].blockNo);
+
+        printf("Enter data: ");
+        scanf("%d", &blocks[i].data);
+
+        if (i < n - 1)
+        {
+            printf("Enter next block number: ");
+            scanf("%d", &blocks[i].next);
+        }
+        else
+        {
+            blocks[i].next = -1;
+        }
+    }
+
+    /* Directory contains first and last block */
+    first = blocks[0].blockNo;
+    last = blocks[n - 1].blockNo;
+
+    printf("\n===== DIRECTORY =====\n");
+    printf("First Block : %d\n", first);
+    printf("Last Block  : %d\n", last);
+
+    printf("\n===== LINKED FILE ALLOCATION =====\n");
+
+    current = first;
+
+    while (current != -1)
+    {
+        for (i = 0; i < n; i++)
+        {
+            if (blocks[i].blockNo == current)
+            {
+                printf("Block %d -> Data = %d",
+                       blocks[i].blockNo,
+                       blocks[i].data);
+
+                if (blocks[i].next != -1)
+                    printf(" -> ");
+
+                current = blocks[i].next;
+                break;
+            }
+        }
+    }
+
+    printf("NULL\n");
+
+    return 0;
+}
+
+OUTPUT:
+Enter number of disk blocks in the file: 5
+
+Enter block details:
+
+Block 1
+Enter block number: 10
+Enter data: 100
+Enter next block number: 5 25
+
+Block 2
+Enter block number: 25
+Enter data: 200
+Enter next block number: 7
+
+Block 3
+Enter block number: 7
+Enter data: 300
+Enter next block number: 40
+
+Block 4
+Enter block number: 4 40
+Enter data: 
+5 400
+Enter next block number: 18
+
+Block 5
+Enter block number: 18
+Enter data: 2 500
+
+===== DIRECTORY =====
+First Block : 10
+Last Block  : 18
+
+===== LINKED FILE ALLOCATION =====
+Block 10 -> Data = 100 -> Block 25 -> Data = 200 -> Block 7 -> Data = 300 -> Block 40 -> Data = 400 -> Block 18 -> Data = 500NULL
